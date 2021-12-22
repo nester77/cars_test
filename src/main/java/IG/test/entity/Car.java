@@ -13,8 +13,7 @@ public class Car {
     private String model;
 
     @Column(name = "year_of_issue")
-    @Temporal(TemporalType.DATE)
-    private Date yearOfIssue;
+    private int yearOfIssue;
 
     @Column(name = "engine_capacity")
     private double engineCapacity;
@@ -26,7 +25,23 @@ public class Car {
     @Column(name = "deleted_car")
     private boolean deletedCar;
 
-    public Car(String brand, String model, Date yearOfIssue, double engineCapacity, int mileage, int price) {
+
+
+    public Car() {
+    }
+
+    public Car(long id, String brand, String model, int yearOfIssue, double engineCapacity, int mileage, int price, boolean deletedCar) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+        this.yearOfIssue = yearOfIssue;
+        this.engineCapacity = engineCapacity;
+        this.mileage = mileage;
+        this.price = price;
+        this.deletedCar = deletedCar;
+    }
+
+    public Car(String brand, String model, int yearOfIssue, double engineCapacity, int mileage, int price) {
         this.brand = brand;
         this.model = model;
         this.yearOfIssue = yearOfIssue;
@@ -59,11 +74,11 @@ public class Car {
         this.model = model;
     }
 
-    public Date getYearOfIssue() {
+    public int getYearOfIssue() {
         return yearOfIssue;
     }
 
-    public void setYearOfIssue(Date yearOfIssue) {
+    public void setYearOfIssue(int yearOfIssue) {
         this.yearOfIssue = yearOfIssue;
     }
 
