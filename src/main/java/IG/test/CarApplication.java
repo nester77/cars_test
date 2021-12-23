@@ -22,10 +22,10 @@ public class CarApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-//        List<Car> carList = carService.getAllCar();
-//        for (Car car : carList) {
-//            System.out.println(car);
-//        }
+        List<Car> carList = carService.getAllCar();
+        for (Car car : carList) {
+            System.out.println(car);
+        }
 //
 //        Car car = carService.getCarById(new Long(3));
 //        System.out.println(car);
