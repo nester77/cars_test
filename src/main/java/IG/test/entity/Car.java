@@ -1,10 +1,13 @@
 package IG.test.entity;
 
+import io.swagger.annotations.ApiModel;
+
 import javax.persistence.*;
-import java.util.Date;
+
 
 @Entity
 @Table(name = "car")
+@ApiModel(value = "class car")
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +30,6 @@ public class Car {
 
 
 
-    public Car() {
-    }
 
     public Car(long id, String brand, String model, int yearOfIssue, double engineCapacity, int mileage, int price, boolean deletedCar) {
         this.id = id;
@@ -49,6 +50,20 @@ public class Car {
         this.mileage = mileage;
         this.price = price;
     }
+
+    public Car(long id, String brand, String model, int yearOfIssue, double engineCapacity, int mileage, int price) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+        this.yearOfIssue = yearOfIssue;
+        this.engineCapacity = engineCapacity;
+        this.mileage = mileage;
+        this.price = price;
+    }
+
+    public Car() {
+    }
+
 
     public long getId() {
         return id;

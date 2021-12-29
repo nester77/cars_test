@@ -1,14 +1,21 @@
 package IG.test.service;
 
 import IG.test.entity.Car;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 public interface CarService {
 
-    public List<Car> getAllCar ();
+    List<Car> getAllCarsForUser();
 
-    public Car getCarById(Long id);
+    Car getCarByIdForUser(Long id);
+
+    List<Car> getAllCarsForAdmin();
+
+    Car getCarByIdForAdmin(Long id);
+
+    void deleteCarById(long id);
+
 }
+

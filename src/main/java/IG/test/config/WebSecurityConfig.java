@@ -35,21 +35,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/news").hasRole("USER")
 
                 //Доступ разрешен всем пользователей
-                .antMatchers("/", "/resources/**","/allCars").permitAll()
+                .antMatchers("/", "/resources/**","/allCars","/swagger-ui/**").permitAll()
 
                 //Все остальные страницы требуют аутентификации
                 .anyRequest().authenticated()
                 .and()
                 //Настройка для входа в систему
                 .formLogin()
-                .loginPage("/login")
+//                .loginPage("/login")
                 //Перенарпавление на главную страницу после успешного входа
                 .defaultSuccessUrl("/")
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll()
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/")
+                ;
     }
 
     @Autowired
