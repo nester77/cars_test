@@ -5,6 +5,7 @@ import IG.test.entity.User;
 import IG.test.repository.RoleRepository;
 import IG.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,7 +46,7 @@ public class UserService implements UserDetailsService {
         return userFromDb.orElse(new User());
     }
 
-    public List<User> allUsers() {
+    public List<User> allUsers(int pageNo, int pageSize) {
         return userRepository.findAll();
     }
 

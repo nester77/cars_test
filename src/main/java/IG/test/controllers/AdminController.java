@@ -3,25 +3,31 @@ package IG.test.controllers;
 import IG.test.entity.Car;
 import IG.test.entity.User;
 import IG.test.service.CarService;
+import IG.test.service.EntityService;
 import IG.test.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class AdminController {
+
     private UserService userService;
     private CarService carService;
+    private EntityService entityServiceCar;
+    private EntityService entityServiceUser;
 
     @Autowired
-    public AdminController(UserService userService, CarService carService){
+    public AdminController(@Qualifier("userRepository")EntityService entityServiceUser, @Qualifier("carRepository") EntityService entityServiceCar, UserService userService, CarService carService){
         this.userService=userService;
         this.carService=carService;
+        this.entityServiceCar=entityServiceCar;
+        this.entityServiceUser=entityServiceUser;
     }
 
     @GetMapping("/admin")
@@ -30,17 +36,17 @@ public class AdminController {
         return "admin:"+ user.getUsername();
     }
 
-    @RequestMapping("/admin/users")
-    @ApiOperation(value = "show all users for admin", response = List.class)
-    public List<User> getAllUsersForAdmin() {
-        return userService.allUsers();
-    }
+//    @RequestMapping("/admin/users")
+//    @ApiOperation(value = "show all users for admin", response = List.class)
+//    public List<User> getAllUsersForAdmin() {
+//        return userService.allUsers();
+//    }
 
-    @RequestMapping("/admin/allCars")
-    @ApiOperation(value = "show all cars for admin", response = List.class)
-    public List<Car> getAllCarsForAdmin() {
-        return carService.getAllCarsForAdmin();
-    }
+//    @RequestMapping("/admin/allCars")
+//    @ApiOperation(value = "show all cars for admin", response = List.class)
+//    public List<Car> getAllCarsForAdmin() {
+//        return carService.getAllCarsForAdmin();
+//    }
 
     @GetMapping("/admin/car/{id}")
     @ApiOperation(value = "show car by id", response = Car.class)
@@ -49,9 +55,24 @@ public class AdminController {
     }
 
     @GetMapping("/admin/car-delete/{id}")
-    public  String carDelete (@PathVariable(value = "id") long id, ModelMap modelMap) {
+    @ApiOperation(value = "delete car by id")
+    public String carDelete (@PathVariable(value = "id") long id, ModelMap modelMap) {
         carService.deleteCarById(id);
-        return "redirect:/airplanes";
+        return "delete car";
+
+
+    }
+
+    @GetMapping("/admin/allCars/{pageNo}/{pageSize}")
+    @ApiOperation(value = "show all cars for admin by page", response = List.class)
+    public List getPaginatedCar(@PathVariable int pageNo, @PathVariable int pageSize){
+        return entityServiceCar.findPaginated(pageNo, pageSize);
+    }
+
+    @GetMapping("/admin/users/{pageNo}/{pageSize}")
+    @ApiOperation(value = "show all users for admin by page", response = List.class)
+    public List getPaginatedUser(@PathVariable int pageNo, @PathVariable int pageSize){
+        return entityServiceUser.findPaginated(pageNo, pageSize);
     }
 
 

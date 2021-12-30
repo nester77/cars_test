@@ -15,6 +15,7 @@ public class CarServiceImpl implements CarService {
 
     private CarRepository carRepository;
 
+
     @Autowired
     public CarServiceImpl(CarRepository carRepository) {
         this.carRepository = carRepository;
@@ -34,7 +35,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> getAllCarsForAdmin() {
+    public List<Car> getAllCarsForAdmin(int pageNo, int pageSize) {
         return carRepository.findAll();
     }
 
@@ -48,6 +49,11 @@ public class CarServiceImpl implements CarService {
     public void deleteCarById(long id) {
         carRepository.deleteCarById(id);
 
+    }
+
+    @Override
+    public void saveEntity(Car car) {
+        carRepository.save(car);
     }
 
 //    @Override

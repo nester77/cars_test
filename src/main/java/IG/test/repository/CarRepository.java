@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 
-public interface CarRepository extends JpaRepository<Car, Long> {
+public interface CarRepository extends JpaRepository<Car, Long>, EntityRepository<Car, Long> {
 
     @Query("SELECT c FROM Car c WHERE c.deletedCar = false")
     List<Car> getAllCarForUser();
