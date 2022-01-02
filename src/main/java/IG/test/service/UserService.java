@@ -1,11 +1,15 @@
 package IG.test.service;
 
+import IG.test.entity.Car;
 import IG.test.entity.Role;
 import IG.test.entity.User;
 import IG.test.repository.RoleRepository;
 import IG.test.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +34,10 @@ public class UserService implements UserDetailsService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
+    public UserService(UserRepository userRepository) {
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
@@ -47,7 +55,9 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> allUsers(int pageNo, int pageSize) {
-        return userRepository.findAll();
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+        Page<User> pagedResult = userRepository.findAll(paging);
+        return pagedResult.toList();
     }
 
 //    public boolean saveUser(User user) {
@@ -77,7 +87,7 @@ public class UserService implements UserDetailsService {
 //    }
 
 
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
+//    public User findByUsername(String username) {
+//        return userRepository.findByUsername(username);
+//    }
 }

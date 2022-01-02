@@ -22,11 +22,19 @@ public class CarController {
     }
 
 
-    @RequestMapping("/allCars")
-    @ApiOperation(value = "show all cars for user", response = List.class)
-    public List<Car> getAllCars() {
-        return carService.getAllCarsForUser();
+//    @RequestMapping("/allCars")
+//    @ApiOperation(value = "show all cars for user", response = List.class)
+//    public List<Car> getAllCars() {
+//        return carService.getAllCarsForUser();
+//    }
+
+    @GetMapping("/allCars/{pageNo}/{pageSize}")
+    @ApiOperation(value = "show all cars for user by page", response = List.class)
+    public List <Car> getPaginatedCar(@PathVariable int pageNo, @PathVariable int pageSize){
+        return carService.getAllCarsForUser(pageNo, pageSize);
     }
+
+
 
     @GetMapping("/car/{id}")
     @ApiOperation(value = "show car by id for user", response = Car.class)

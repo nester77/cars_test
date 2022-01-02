@@ -1,39 +1,43 @@
 package IG.test.controllers;
 
 import IG.test.entity.Car;
+import IG.test.entity.CarPage;
+import IG.test.entity.CarSearchCriteria;
 import IG.test.entity.User;
 import IG.test.service.CarService;
-import IG.test.service.EntityService;
 import IG.test.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.ui.ModelMap;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class AdminController {
 
     private UserService userService;
     private CarService carService;
-    private EntityService entityServiceCar;
-    private EntityService entityServiceUser;
+
 
     @Autowired
-    public AdminController(@Qualifier("userRepository")EntityService entityServiceUser, @Qualifier("carRepository") EntityService entityServiceCar, UserService userService, CarService carService){
-        this.userService=userService;
-        this.carService=carService;
-        this.entityServiceCar=entityServiceCar;
-        this.entityServiceUser=entityServiceUser;
+    public AdminController(UserService userService, CarService carService) {
+        this.userService = userService;
+        this.carService = carService;
+
     }
 
     @GetMapping("/admin")
-    public String pageForAdmins (Principal principal) {
-        User user = userService.findByUsername(principal.getName());
-        return "admin:"+ user.getUsername();
+    public String pageForAdmins(Principal principal) {
+        UserDetails user = userService.loadUserByUsername(principal.getName());
+        return "admin:" + user.getUsername();
     }
 
 //    @RequestMapping("/admin/users")
@@ -56,24 +60,63 @@ public class AdminController {
 
     @GetMapping("/admin/car-delete/{id}")
     @ApiOperation(value = "delete car by id")
-    public String carDelete (@PathVariable(value = "id") long id, ModelMap modelMap) {
+    public String carDelete(@PathVariable(value = "id") long id) {
         carService.deleteCarById(id);
         return "delete car";
-
-
     }
+
+    @PostMapping("/admin/car-new")
+    @ApiOperation(value = "create new car")
+    void newCar(@RequestBody Car newCar) {
+        carService.saveEntity(newCar);
+    }
+
+    @PutMapping("/admin/car-update")
+    @ApiOperation(value = "update car by id")
+    void updateCar(@RequestBody Car updateCar){
+        carService.saveEntity(updateCar);
+    }
+
 
     @GetMapping("/admin/allCars/{pageNo}/{pageSize}")
     @ApiOperation(value = "show all cars for admin by page", response = List.class)
-    public List getPaginatedCar(@PathVariable int pageNo, @PathVariable int pageSize){
-        return entityServiceCar.findPaginated(pageNo, pageSize);
+    public List<Car> getPaginatedCar(@PathVariable int pageNo, @PathVariable int pageSize) {
+        return carService.getAllCarsForAdmin(pageNo, pageSize);
     }
 
     @GetMapping("/admin/users/{pageNo}/{pageSize}")
     @ApiOperation(value = "show all users for admin by page", response = List.class)
-    public List getPaginatedUser(@PathVariable int pageNo, @PathVariable int pageSize){
-        return entityServiceUser.findPaginated(pageNo, pageSize);
+    public List<User> getPaginatedUser(@PathVariable int pageNo, @PathVariable int pageSize) {
+        return userService.allUsers(pageNo, pageSize);
     }
+
+
+    @GetMapping("/admin/Cars")
+    Page<Car> getCars(
+            @RequestParam Optional<Integer> pageNo,
+            @RequestParam Optional<Integer> pageSize,
+            @RequestParam Optional<String> sortBy
+    ) {
+        return carService.getAllCarsForAdmin2(
+                PageRequest.of(
+                        pageNo.orElse(0),
+                        pageSize.orElse(5),
+                        Sort.Direction.ASC,
+                        sortBy.orElse("id")
+                )
+
+        );
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Car>> getEmployees(CarPage carPage,
+                                                  CarSearchCriteria carSearchCriteria){
+        return new ResponseEntity<>(carService.getAllCarsForAdmin3(carPage, carSearchCriteria),
+                HttpStatus.OK);
+    }
+
+
+
 
 
 //    @PostMapping("/admin")
@@ -98,7 +141,6 @@ public class AdminController {
     public User getCarById(@PathVariable(value = "id") Long id) {
         return userService.findUserById(id);
     }
-
 
 
 //    @RequestMapping(value = "/login", method = RequestMethod.GET)

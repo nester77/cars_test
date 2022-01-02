@@ -1,17 +1,18 @@
 package IG.test.repository;
 
 import IG.test.entity.Car;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.util.List;
 
-
-public interface CarRepository extends JpaRepository<Car, Long>, EntityRepository<Car, Long> {
+public interface CarRepository extends PagingAndSortingRepository<Car,Long> {
 
     @Query("SELECT c FROM Car c WHERE c.deletedCar = false")
-    List<Car> getAllCarForUser();
+    Page<Car> getAllCarForUser(Pageable paging);
 
     @Query("SELECT c FROM Car c WHERE c.id = :id")
     Car getById(Long id);
@@ -19,6 +20,9 @@ public interface CarRepository extends JpaRepository<Car, Long>, EntityRepositor
     @Query("UPDATE Car SET deletedCar=true WHERE id=:id")
     @Modifying
     void deleteCarById(Long id);
+
+    @Query("SELECT c FROM Car c WHERE c.model = ':pageRequest.getSort()' or c.model = :filter" )
+    Page<Car> getAllCarForAdmin(PageRequest pageRequest, String filter);
 
 
 
