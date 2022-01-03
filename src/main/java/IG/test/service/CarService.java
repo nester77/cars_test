@@ -11,14 +11,10 @@ import java.util.List;
 
 public interface CarService {
 
-    Page<Car> getAllCarsForAdmin3(CarPage employeePage, CarSearchCriteria employeeSearchCriteria);
-
 
     List<Car> getAllCarsForUser(int pageNo, int pageSize);
 
     Car getCarByIdForUser(Long id);
-
-    List<Car> getAllCarsForAdmin(int pageNo, int pageSize);
 
     Car getCarByIdForAdmin(Long id);
 
@@ -26,6 +22,7 @@ public interface CarService {
 
     void saveEntity(Car car);
 
-    Page<Car> getAllCarsForAdmin2(PageRequest pageRequest);
+    Page<Car> getAllCarsForAdmin(CarPage carPage, CarSearchCriteria carSearchCriteria);
 }
+
 

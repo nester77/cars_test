@@ -40,18 +40,6 @@ public class AdminController {
         return "admin:" + user.getUsername();
     }
 
-//    @RequestMapping("/admin/users")
-//    @ApiOperation(value = "show all users for admin", response = List.class)
-//    public List<User> getAllUsersForAdmin() {
-//        return userService.allUsers();
-//    }
-
-//    @RequestMapping("/admin/allCars")
-//    @ApiOperation(value = "show all cars for admin", response = List.class)
-//    public List<Car> getAllCarsForAdmin() {
-//        return carService.getAllCarsForAdmin();
-//    }
-
     @GetMapping("/admin/car/{id}")
     @ApiOperation(value = "show car by id", response = Car.class)
     public Car getCarByIdForAdmin(@PathVariable(value = "id") Long id) {
@@ -73,16 +61,10 @@ public class AdminController {
 
     @PutMapping("/admin/car-update")
     @ApiOperation(value = "update car by id")
-    void updateCar(@RequestBody Car updateCar){
+    void updateCar(@RequestBody Car updateCar) {
         carService.saveEntity(updateCar);
     }
 
-
-    @GetMapping("/admin/allCars/{pageNo}/{pageSize}")
-    @ApiOperation(value = "show all cars for admin by page", response = List.class)
-    public List<Car> getPaginatedCar(@PathVariable int pageNo, @PathVariable int pageSize) {
-        return carService.getAllCarsForAdmin(pageNo, pageSize);
-    }
 
     @GetMapping("/admin/users/{pageNo}/{pageSize}")
     @ApiOperation(value = "show all users for admin by page", response = List.class)
@@ -91,32 +73,13 @@ public class AdminController {
     }
 
 
-    @GetMapping("/admin/Cars")
-    Page<Car> getCars(
-            @RequestParam Optional<Integer> pageNo,
-            @RequestParam Optional<Integer> pageSize,
-            @RequestParam Optional<String> sortBy
-    ) {
-        return carService.getAllCarsForAdmin2(
-                PageRequest.of(
-                        pageNo.orElse(0),
-                        pageSize.orElse(5),
-                        Sort.Direction.ASC,
-                        sortBy.orElse("id")
-                )
-
-        );
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<Car>> getEmployees(CarPage carPage,
-                                                  CarSearchCriteria carSearchCriteria){
-        return new ResponseEntity<>(carService.getAllCarsForAdmin3(carPage, carSearchCriteria),
+    @GetMapping("/admin/cars")
+    @ApiOperation(value = "show cars for admin with pagination, sorting and filtering", response = User.class)
+    public ResponseEntity<Page<Car>> getAllCarsForAdmin(CarPage carPage,
+                                                        CarSearchCriteria carSearchCriteria) {
+        return new ResponseEntity<>(carService.getAllCarsForAdmin(carPage, carSearchCriteria),
                 HttpStatus.OK);
     }
-
-
-
 
 
 //    @PostMapping("/admin")
