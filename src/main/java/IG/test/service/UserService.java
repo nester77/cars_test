@@ -39,7 +39,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
@@ -47,6 +47,11 @@ public class UserService implements UserDetailsService {
         }
 
         return user;
+    }
+
+    public long findRole(long id) {
+
+        return userRepository.findRoleByUserId(id);
     }
 
     public User findUserById(Long userId) {

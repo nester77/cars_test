@@ -9,16 +9,18 @@ import IG.test.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class AdminController {
@@ -36,8 +38,10 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String pageForAdmins(Principal principal) {
-        UserDetails user = userService.loadUserByUsername(principal.getName());
-        return "admin:" + user.getUsername();
+        User user = userService.loadUserByUsername(principal.getName());
+
+        return "admin:" + user.getUsername()+ userService.findRole(user.getId());
+
     }
 
     @GetMapping("/admin/car/{id}")
@@ -55,14 +59,16 @@ public class AdminController {
 
     @PostMapping("/admin/car-new")
     @ApiOperation(value = "create new car")
-    void newCar(@RequestBody Car newCar) {
+    String createCar(@RequestBody @Valid Car newCar, BindingResult bindingResult) {
         carService.saveEntity(newCar);
+        return bindingResult.toString();
     }
 
     @PutMapping("/admin/car-update")
     @ApiOperation(value = "update car by id")
-    void updateCar(@RequestBody Car updateCar) {
+    String updateCar(@RequestBody @Valid Car updateCar, BindingResult bindingResult) {
         carService.saveEntity(updateCar);
+        return bindingResult.toString();
     }
 
 
@@ -74,7 +80,7 @@ public class AdminController {
 
 
     @GetMapping("/admin/cars")
-    @ApiOperation(value = "show cars for admin with pagination, sorting and filtering", response = User.class)
+    @ApiOperation(value = "show all cars for admin with pagination, sorting and filtering", response = User.class)
     public ResponseEntity<Page<Car>> getAllCarsForAdmin(CarPage carPage,
                                                         CarSearchCriteria carSearchCriteria) {
         return new ResponseEntity<>(carService.getAllCarsForAdmin(carPage, carSearchCriteria),
