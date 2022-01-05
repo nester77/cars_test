@@ -27,6 +27,11 @@ public class CarCriteriaRepository {
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
+    public Page<Car> findAllWithFiltersForUser(CarPage carPage, CarSearchCriteria carSearchCriteria) {
+        return findAllWithFilters(carPage, carSearchCriteria);
+    }
+
+
     public Page<Car> findAllWithFilters(CarPage carPage,
                                         CarSearchCriteria carSearchCriteria) {
         CriteriaQuery<Car> criteriaQuery = criteriaBuilder.createQuery(Car.class);
@@ -111,6 +116,13 @@ public class CarCriteriaRepository {
             );
         }
 
+        if (Thread.currentThread().getStackTrace()[3].getMethodName()=="findAllWithFiltersForUser") {
+            predicates.add(
+                    criteriaBuilder.isFalse((carRoot.get("deletedCar")))
+            );
+        }
+
+
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 
@@ -135,6 +147,7 @@ public class CarCriteriaRepository {
         countQuery.select(criteriaBuilder.count(countRoot)).where(predicate);
         return entityManager.createQuery(countQuery).getSingleResult();
     }
+
 
 
 }

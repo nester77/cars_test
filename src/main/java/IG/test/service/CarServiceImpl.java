@@ -29,10 +29,9 @@ public class CarServiceImpl implements CarService {
 
 
     @Override
-    public List<Car> getAllCarsForUser(int pageNo, int pageSize) {
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<Car> pagedResult = carRepository.getAllCarForUser(paging);
-        return pagedResult.toList();
+    public Page<Car> getAllCarsForUser(CarPage carPage,
+                                       CarSearchCriteria carSearchCriteria) {
+        return carCriteriaRepository.findAllWithFiltersForUser(carPage, carSearchCriteria);
 
     }
 
@@ -64,7 +63,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void saveEntity(Car car) {
+    public void saveCar(Car car) {
         carRepository.save(car);
     }
 

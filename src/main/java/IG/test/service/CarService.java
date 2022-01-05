@@ -12,7 +12,7 @@ import java.util.List;
 public interface CarService {
 
 
-    List<Car> getAllCarsForUser(int pageNo, int pageSize);
+    Page<Car> getAllCarsForUser(CarPage carPage, CarSearchCriteria carSearchCriteria);
 
     Car getCarByIdForUser(Long id);
 
@@ -20,7 +20,7 @@ public interface CarService {
 
     void deleteCarById(long id);
 
-    void saveEntity(Car car);
+    void saveCar(Car car);
 
     Page<Car> getAllCarsForAdmin(CarPage carPage, CarSearchCriteria carSearchCriteria);
 }

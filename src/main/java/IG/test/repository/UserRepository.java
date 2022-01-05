@@ -15,6 +15,4 @@ public interface UserRepository extends PagingAndSortingRepository<User,Long>
 {
     User findByUsername(String username);
 
-    @Query("SELECT r.roles_id FROM t_user_roles where r.user_id=:id")
-    long findRoleByUserId(long id);
 }

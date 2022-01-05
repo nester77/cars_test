@@ -38,9 +38,8 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String pageForAdmins(Principal principal) {
-        User user = userService.loadUserByUsername(principal.getName());
-
-        return "admin:" + user.getUsername()+ userService.findRole(user.getId());
+        UserDetails user = userService.loadUserByUsername(principal.getName());
+        return "admin:" + user.getUsername();
 
     }
 
@@ -60,14 +59,14 @@ public class AdminController {
     @PostMapping("/admin/car-new")
     @ApiOperation(value = "create new car")
     String createCar(@RequestBody @Valid Car newCar, BindingResult bindingResult) {
-        carService.saveEntity(newCar);
+        carService.saveCar(newCar);
         return bindingResult.toString();
     }
 
     @PutMapping("/admin/car-update")
     @ApiOperation(value = "update car by id")
     String updateCar(@RequestBody @Valid Car updateCar, BindingResult bindingResult) {
-        carService.saveEntity(updateCar);
+        carService.saveCar(updateCar);
         return bindingResult.toString();
     }
 
