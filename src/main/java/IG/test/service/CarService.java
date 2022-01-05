@@ -4,13 +4,8 @@ import IG.test.entity.Car;
 import IG.test.entity.CarPage;
 import IG.test.entity.CarSearchCriteria;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-
-import java.util.List;
-
 
 public interface CarService {
-
 
     Page<Car> getAllCarsForUser(CarPage carPage, CarSearchCriteria carSearchCriteria);
 

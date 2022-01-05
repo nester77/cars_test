@@ -15,37 +15,35 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank(message= "Brand should not be empty")
-    @Size(min=2, max=30, message= "Brand should be between 2 and 30 characters")
+    @NotBlank(message = "Brand should not be empty")
+    @Size(min = 2, max = 30, message = "Brand should be between 2 and 30 characters")
     private String brand;
 
-    @NotBlank(message= "Model should not be empty" )
-    @Size(min=2, max=30, message= "Model should be between 2 and 30 characters")
+    @NotBlank(message = "Model should not be empty")
+    @Size(min = 2, max = 30, message = "Model should be between 2 and 30 characters")
     private String model;
 
     @Column(name = "year_of_issue")
-    @Min(value=1900, message= "Year of issue should be between 1900 and 2022")
-    @Max(value=2022, message= "Year of issue should be between 1900 and 2022")
+    @Min(value = 1900, message = "Year of issue should be between 1900 and 2022")
+    @Max(value = 2022, message = "Year of issue should be between 1900 and 2022")
     private int yearOfIssue;
 
     @Column(name = "engine_capacity")
-    @Min(value=1, message= "Engine capacity should be between 1 and 10 L")
-    @Max(value=10, message= "Engine capacity should be between 1 and 10 L")
+    @Min(value = 1, message = "Engine capacity should be between 1 and 10 L")
+    @Max(value = 10, message = "Engine capacity should be between 1 and 10 L")
     private double engineCapacity;
 
-    @Min(value=1, message= "Mileage should be between 1 and 10.000.000 km")
-    @Max(value=10000000, message= "Mileage should be between 1 and 10.000.000 km")
+    @Min(value = 1, message = "Mileage should be between 1 and 10.000.000 km")
+    @Max(value = 10000000, message = "Mileage should be between 1 and 10.000.000 km")
     private int mileage;
 
-    @Min(value=1, message= "Price should be between 1 and 100.000 $")
-    @Max(value=100000, message= "Price should be between 1 and 100.000 $")
+    @Min(value = 1, message = "Price should be between 1 and 100.000 $")
+    @Max(value = 100000, message = "Price should be between 1 and 100.000 $")
     private int price;
 
     @Column(name = "deleted_car")
-    @NotNull(message= "DeletedCar should be true or false")
+    @NotNull(message = "DeletedCar should be true or false")
     private boolean deletedCar;
-
-
 
 
     public Car(long id, String brand, String model, int yearOfIssue, double engineCapacity, int mileage, int price, boolean deletedCar) {

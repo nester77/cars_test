@@ -11,15 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -37,6 +34,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin")
+    @ApiOperation(value = "admin page")
     public String pageForAdmins(Principal principal) {
         UserDetails user = userService.loadUserByUsername(principal.getName());
         return "admin:" + user.getUsername();
@@ -86,34 +84,10 @@ public class AdminController {
                 HttpStatus.OK);
     }
 
-
-//    @PostMapping("/admin")
-//    public String deleteUser(@RequestParam(required = true, defaultValue = "") Long userId,
-//                             @RequestParam(required = true, defaultValue = "") String action,
-//                             Model model) {
-//        if (action.equals("delete")) {
-//            userService.deleteUser(userId);
-//        }
-//        return "redirect:/admin";
-//    }
-
-//    @GetMapping("/admin/gt/{userId}")
-//    public String gtUser(@PathVariable("userId") Long userId, Model model) {
-//        model.addAttribute("allUsers", userService.usergtList(userId));
-//        return "admin";
-//    }
-
-
     @GetMapping("/admin/users/{id}")
     @ApiOperation(value = "show user by id for admin", response = User.class)
     public User getCarById(@PathVariable(value = "id") Long id) {
         return userService.findUserById(id);
     }
 
-
-//    @RequestMapping(value = "/login", method = RequestMethod.GET)
-//    public String loginPage(Model model) {
-//
-//        return "loginPage";
-//    }
 }

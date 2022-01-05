@@ -3,13 +3,13 @@ package IG.test.entity;
 public class CarSearchCriteria {
     private String brand;
     private String model;
-    private int yearOfIssueMin=1900;
-    private int yearOfIssueMax=3000;
-    private double engineCapacityMin=0.1;
-    private double engineCapacityMax=500;
-    private int mileageMax=1000000000;
-    private int priceMin=1;
-    private int priceMax=1000000000;
+    private int yearOfIssueMin = 1900;
+    private int yearOfIssueMax = 3000;
+    private double engineCapacityMin = 0.1;
+    private double engineCapacityMax = 500;
+    private int mileageMax = 1000000000;
+    private int priceMin = 1;
+    private int priceMax = 1000000000;
 
     public String getBrand() {
         return brand;

@@ -116,7 +116,7 @@ public class CarCriteriaRepository {
             );
         }
 
-        if (Thread.currentThread().getStackTrace()[3].getMethodName()=="findAllWithFiltersForUser") {
+        if (Thread.currentThread().getStackTrace()[3].getMethodName() == "findAllWithFiltersForUser") {
             predicates.add(
                     criteriaBuilder.isFalse((carRoot.get("deletedCar")))
             );
@@ -147,7 +147,6 @@ public class CarCriteriaRepository {
         countQuery.select(criteriaBuilder.count(countRoot)).where(predicate);
         return entityManager.createQuery(countQuery).getSingleResult();
     }
-
 
 
 }
